@@ -1,7 +1,8 @@
 # Echoserver
 Echo server and client using python socket
 # AIM:
-
+# Name : rizwan
+# Register No : 212224100051
 To develop a simple webserver to serve html programming pages.
 
 ## DESIGN STEPS:
@@ -27,36 +28,44 @@ Serving the HTML pages.
 Testing the webserver
 
 ## PROGRAM:
+Server code
 ```
-from http.server import HTTPServer,BaseHTTPRequestHandler
-
-content='''
-<!doctype html>
-<html>
-<head>
-<title> My Web Server</title>
-</head>
-<body>
-<h1>Top Five Web Application Development Frameworks</h1>
-<h2>1.Django</h2>
-<h2>2. MEAN Stack</h2>
-<h2>3. React </h2>
-</body>
-</html>
+import socket
 
 
-class MyServer(BaseHTTPRequestHandler):
-    def do_GET(self):
-        print("Get request received...")
-        self.send_response(200) 
-        self.send_header("content-type", "text/html")       
-        self.end_headers()
-        self.wfile.write(content.encode())
+HOST = "127.0.0.1"  # Standard loopback interface address (localhost)
+PORT = 65432  # Port to listen on (non-privileged ports are > 1023)
 
-print("This is my webserver") 
-server_address =('keerthi',2323)
-httpd = HTTPServer(server_address,MyServer)
-httpd.serve_forever()
+
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    s.bind((HOST, PORT))
+    s.listen()
+    conn, addr = s.accept()
+    with conn:
+        print(f"Connected by {addr}")
+        while True:
+            data = conn.recv(1024)
+            if not data:
+                break
+            conn.sendall(data)
+```
+Client code
+```
+import socket
+
+
+HOST = "127.0.0.1"  # The server's hostname or IP address
+PORT = 65432  # The port used by the server
+
+
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    s.connect((HOST, PORT))
+    s.sendall(b"rizwan, 212224100051,30/01/2026")
+    data = s.recv(1024)
+
+
+print(f"Received {data!r}")
+
 ```
 ##  Architecture Diagram
 
@@ -86,12 +95,11 @@ httpd.serve_forever()
 
 
 ## OUTPUT:
-### SERVER OUTPUT: <img width="1053" height="855" alt="image" src="https://github.com/user-attachments/assets/9f8aa598-2943-43d6-9370-cd3d030859b1" />
-
-
 ### CLIENT OUTPUT:
-<img width="1062" height="855" alt="image" src="https://github.com/user-attachments/assets/d3861230-8b4b-4fa0-a6ca-1c6973f6292f" />
+![imag](https://github.com/user-attachments/assets/6e596c47-1ced-4066-8ba9-af31d5d3e4bd)
 
+### SERVER OUTPUT:
+![image](https://github.com/user-attachments/assets/a78e840a-7539-4cc2-ab7e-35d2f55c64c3)
 
 ## RESULT:
 The program is executed succesfully
